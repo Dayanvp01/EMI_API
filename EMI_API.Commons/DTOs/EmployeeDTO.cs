@@ -8,9 +8,14 @@ namespace EMI_API.Commons.DTOs
 {
     public class EmployeeDTO
     {
+
         public int Id { get; set; }
         public string Name { get; set; } = null!;
         public decimal Salary { get; set; }
         public int CurrentPosition { get; set; }
+        public int DepartmentId { get; set; }
+        public DepartmentDTO Department { get; set; } = null!;
+        public List<PositionHistoryDTO> PositionsHistories { get; set; } = new List<PositionHistoryDTO>();
+        public List<ProjectDTO> Projects { get; set; } = new List<ProjectDTO>();
     }
 }

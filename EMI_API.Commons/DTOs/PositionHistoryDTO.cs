@@ -1,13 +1,12 @@
-﻿namespace EMI_API.Commons.Entities
+﻿namespace EMI_API.Commons.DTOs
 {
-    public class PositionHistory
+    public class PositionHistoryDTO
     {
-        public int Id { get; set; } 
+        public int Id { get; set; }
         public int EmployeeId { get; set; }
         public string Position { get; set; } = null!;
         public DateTime StartDate { get; set; }
         public DateTime? EndDate { get; set; }
-
-        public Employee Employee { get; set; } = null!;
     }
 }
+

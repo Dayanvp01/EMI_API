@@ -1,7 +1,8 @@
-﻿using EMI_API.Commons.DTOs;
-using EMI_API.Commons.Entities;
+﻿using EMI_API.Business.Interfaces;
+using EMI_API.Commons.DTOs;
+using EMI_API.Commons.Enums;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
-using System;
 
 namespace EMI_API.EndPoints
 {
@@ -12,55 +13,54 @@ namespace EMI_API.EndPoints
         {
             group.MapGet("/", GetAll);
             group.MapGet("/{id:int}", GetById);
-
+            group.MapPost("ByDepartmentIdInAnyProject/{deparmentId:int}", ByDepartmentIdInAnyProject);
             group.MapPost("/", Create).DisableAntiforgery();
-
+            group.MapPost("/{id:int}/setProject", SetProjects);
             group.MapPut("/{id:int}", Update).DisableAntiforgery();
-
-            group.MapDelete("/{id:int}", Delete);
+            group.MapDelete("/{id:int}", Delete).RequireAuthorization(Roles.ADMIN);
             return group;
         }
 
-        static async Task<Ok<List<EmployeeDTO>>> GetAll()
+
+        [Authorize(Roles = Roles.ADMIN)]
+        private static async Task<Results<NoContent, NotFound, BadRequest<string>>> SetProjects(IEmployeeService service,int id, List<int> projectsIds)
         {
-            var result = new List<EmployeeDTO>(); // agregar servicio para obtenet todos
-            return TypedResults.Ok(result);
+            return await service.SetProject(id, projectsIds);
         }
 
-        static async Task<Results<Ok<EmployeeDTO>, NotFound>> GetById( int id)
+        [Authorize(Roles = $"{Roles.ADMIN},{Roles.USER}")]
+        static async Task<Ok<List<EmployeeDTO>>> GetAll(IEmployeeService service)
         {
-            var result = new EmployeeDTO();// agregar servicio para obtener por Id
-            if (result is null)
-            {
-                return TypedResults.NotFound();
-            }
-            return TypedResults.Ok(result);
+            return await service.GetAll();
         }
 
-        static async Task<Results<Created<EmployeeDTO>, ValidationProblem>> Create(CreateEmployeeDTO newEntity)
+        [Authorize(Roles = $"{Roles.ADMIN},{Roles.USER}")]
+        static async Task<Results<Ok<EmployeeDTO>, NotFound>> GetById(IEmployeeService service,int id)
         {
-            var entityDTO =  new EmployeeDTO(); // Agregar servicio para crear nuevo registro
-            return TypedResults.Created($"/employees/{entityDTO.Id}", entityDTO);
+            return await service.GetById(id);
         }
 
-        static async Task<Results<NoContent, NotFound, ValidationProblem>> Update(int id, CreateEmployeeDTO employee)
+        [Authorize(Roles = $"{Roles.ADMIN},{Roles.USER}")]
+        static async Task<Results<Ok<List<EmployeeDTO>>, NotFound>> ByDepartmentIdInAnyProject(IEmployeeService service, int deparmentId)
         {
-            var result = true;// Agregar servicio para actualizar
-            if (!result)
-            {
-                return TypedResults.NotFound();
-            }
-            return TypedResults.NoContent();
+            return await service.ByDeparmentIdInAnyProject(deparmentId); 
         }
 
-        static async Task<Results<NoContent, NotFound>> Delete(int id)
+        [Authorize(Roles = Roles.ADMIN)]
+        static async Task<Results<Created<EmployeeDTO>, ValidationProblem>> Create(IEmployeeService service, CreateEmployeeDTO newEntity)
         {
-            var result = true;//Agregar servicio para borrar un registro
-            if (!result)
-            {
-                return TypedResults.NotFound();
-            }
-            return TypedResults.NoContent();
+            return await service.Create(newEntity);
+        }
+
+        [Authorize(Roles = Roles.ADMIN)]
+        static async Task<Results<NoContent, NotFound, ValidationProblem>> Update(IEmployeeService service, int id, CreateEmployeeDTO employee)
+        {
+           return await service.Update(id, employee);
+        }
+
+        static async Task<Results<NoContent, NotFound>> Delete(IEmployeeService service, int id)
+        {
+            return await service.Delete(id);
         }
     }
 }
