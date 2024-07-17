@@ -79,7 +79,7 @@ El servicio expone esta consulta en el endpoint `/api/employees/ByDepartmentIdIn
 - **Malas practicas de programación, como es el uso excesivo de recursos en operaciones de bucles, o falta de gestión de excepciones que pueden ralentizar la aplicación. Se puede solucionar realizando revisiones de código, utilizar herramientas de perfilado y optimización y seguir las practicas de codificación eficientes  ayuda a mejorar el rendimiento de la aplicación.
 - **Consultas ineficientes a base de datos, consultas mal diseñadas  o sin indices pueden ralentizar bastante la aplicación. Se puede solucionar  mediante la optimización de consultas con el uso de índices adecuados, revisión del modelo de datos y el uso de técnicas como la carga diferida ayudan a mejorar el rendimiento..
 - **Falta de almacenamiento de cache, acceder repetidamente a datos que raramente cambia sin almacenar en cache  puede afectar el rendimiento. Se puede Solucionar implementando estrategias de almacenamiento en cache como el uso de Redis para datos que se acceden con frecuencia puede reducir la carga en la base de datos y mejorar los tiempos de respuesta.
-- **Versiones desactualizadas de .NET o bibliotecas**: no utilizar las últimas versiones puede afectar el rendimiento y la seguridad. Solución: mantenerse al día con las actualizaciones de .NET y bibliotecas.
+- **Versiones desactualizadas de .NET o bibliotecas: no utilizar las últimas versiones puede afectar el rendimiento y la seguridad. Solución: mantenerse al día con las actualizaciones de .NET y bibliotecas.**
 
 ### Perfilado y Optimización de Consultas Lentas en una Aplicación ASP.NET Core
 
