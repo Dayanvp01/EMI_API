@@ -1,18 +1,17 @@
 # EMI_API
 
 #Section 2: ASP.NET Core
-	Describe how you would implement authentication and authorization in this API.
-	* En ASP.Net Core se puede implementar un sistema de usuarios con Identity, con identity se nos crean las tablas de SQL Server necesarias, ademas de un conjunto de métodos auxiliares para manejar en distintos escenarios. Luego de autenticado, nuestro WebApi devolvería un Json Web Token o JWT que es un string seguro firmado con una llave secreta, de manera que se puede estar seguro de la veracidad de la información que contiene el JWT. JWT contiene claims que es la información acerca del usuario como, nombre, email, id entre otros. Luego cuando el usuario quiera utilizar nuestros endpoints protegidos, debera enviar el JWT atravez de la cabecera de la petición y de esta manera podrá validarse como un usuario autenticado. Por ultimo se configuraría la autorizacion basada en claims,  se crearía una política para proteger los endpoints que deseemos. Con esta política se le configura el claim  que debe tener un tipo de usuario especifico para acceder a todos los endpoints, ejemplo un usuario registrado solo puede acceder a los endpoints tipo get, y un usuario con el claim configurado “admin” puede acceder a todos los endpoints. 
+	* Describe how you would implement authentication and authorization in this API.
+		En ASP.Net Core se puede implementar un sistema de usuarios con Identity, con identity se nos crean las tablas de SQL Server necesarias, ademas de un conjunto de métodos auxiliares para manejar en distintos escenarios. Luego de autenticado, nuestro WebApi devolvería un Json Web Token o JWT que es un string seguro firmado con una llave secreta, de manera que se puede estar seguro de la veracidad de la información que contiene el JWT. JWT contiene claims que es la información acerca del usuario como, nombre, email, id entre otros. Luego cuando el usuario quiera utilizar nuestros endpoints protegidos, debera enviar el JWT atravez de la cabecera de la petición y de esta manera podrá validarse como un usuario autenticado. Por ultimo se configuraría la autorizacion basada en claims,  se crearía una política para proteger los endpoints que deseemos. Con esta política se le configura el claim  que debe tener un tipo de usuario especifico para acceder a todos los endpoints, ejemplo un usuario registrado solo puede acceder a los endpoints tipo get, y un usuario con el claim configurado “admin” puede acceder a todos los endpoints. 
 	
-	Explain the concept of middleware in ASP.NET Core.
-	* Los middleware definen acciones que queremos ejecutar cada vez que una petición http sea recibida por nuestra aplicación.
+	* Explain the concept of middleware in ASP.NET Core.
+		Los middleware definen acciones que queremos ejecutar cada vez que una petición http sea recibida por nuestra aplicación.
 
 #Section 3: Authentication and Authorization
 
-	Provide an example of how to protect the endpoints in the employees controller using these roles.
-	
-	Se debe agregar el atributo  [Authorize(Roles = Roles.ADMIN)]  al servicio que se quiere aplicar reglas de autorizacion
-	o tambien se puede en los endpoints mediante el metodo .RequireAuthorization(Roles.ADMIN)
+	* Provide an example of how to protect the endpoints in the employees controller using these roles.
+		Se debe agregar el atributo  [Authorize(Roles = Roles.ADMIN)]  al servicio que se quiere aplicar reglas de autorizacion
+		o tambien se puede en los endpoints mediante el metodo .RequireAuthorization(Roles.ADMIN)
 	
 #Section 4: Database Design and EF Core
 
