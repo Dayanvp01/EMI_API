@@ -1,6 +1,7 @@
 ﻿using EMI_API.Business.Interfaces;
 using EMI_API.Commons.DTOs;
 using EMI_API.Commons.Enums;
+using EMI_API.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 
@@ -9,13 +10,15 @@ namespace EMI_API.EndPoints
 {
     public static class DepartmentsEndPoints
     {
+        private static readonly string entity = "Department";
         public static RouteGroupBuilder MapDepartments(this RouteGroupBuilder group)
         {
-            group.MapGet("/", GetAll);
-            group.MapGet("/{id:int}", GetById);
-            group.MapPost("/", Create).DisableAntiforgery();
-            group.MapPut("/{id:int}", Update).DisableAntiforgery();
-            group.MapDelete("/{id:int}", Delete).RequireAuthorization(Roles.ADMIN);
+            group.MapGet("/", GetAll).GetDocumentation(entity);
+            group.MapGet("/{id:int}", GetById).GetByIdDocumentation(entity);
+            group.MapPost("/", Create).DisableAntiforgery().CreateDocumentation(entity);
+            group.MapPut("/{id:int}", Update).DisableAntiforgery().UpdateDocumentation(entity);
+            group.MapDelete("/{id:int}", Delete).RequireAuthorization(Roles.ADMIN)
+                .DeleteDocumentation(entity);
             return group;
         }
 

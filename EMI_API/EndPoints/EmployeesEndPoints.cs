@@ -1,6 +1,7 @@
 ﻿using EMI_API.Business.Interfaces;
 using EMI_API.Commons.DTOs;
 using EMI_API.Commons.Enums;
+using EMI_API.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 
@@ -8,16 +9,37 @@ namespace EMI_API.EndPoints
 {
     public static class EmployeesEndPoints
     {
-
+        private static readonly string entity = "Employee";
         public static RouteGroupBuilder MapEmployees(this RouteGroupBuilder group)
         {
-            group.MapGet("/", GetAll);
-            group.MapGet("/{id:int}", GetById);
-            group.MapPost("ByDepartmentIdInAnyProject/{deparmentId:int}", ByDepartmentIdInAnyProject);
-            group.MapPost("/", Create).DisableAntiforgery();
-            group.MapPost("/{id:int}/setProject", SetProjects);
-            group.MapPut("/{id:int}", Update).DisableAntiforgery();
-            group.MapDelete("/{id:int}", Delete).RequireAuthorization(Roles.ADMIN);
+            group.MapGet("/", GetAll).GetDocumentation(entity); ;
+            group.MapGet("/{id:int}", GetById).GetByIdDocumentation(entity); ;
+            
+            group.MapPost("/", Create).DisableAntiforgery().CreateDocumentation(entity); ;
+           
+            group.MapPut("/{id:int}", Update).DisableAntiforgery().UpdateDocumentation(entity); 
+            group.MapDelete("/{id:int}", Delete).RequireAuthorization(Roles.ADMIN)
+                .DeleteDocumentation(entity);
+
+            group.MapPost("ByDepartmentIdInAnyProject/{deparmentId:int}", ByDepartmentIdInAnyProject)
+                .WithOpenApi(d =>
+                {
+                    d.Summary = $"Obtner {entity} por department";
+                    d.Description = $"Obtiene los {entity} por departament que estan en almenos en un proyecto ";
+                    d.Parameters[0].Description = $"El id del department a consultar {entity}";
+                    return d;
+                });
+
+            group.MapPost("/{id:int}/setProject", SetProjects)
+                    .WithOpenApi(d =>
+                    {
+                        d.Summary = $"Asigna un proyecto a un {entity}";
+                        d.Description = $"Asigna una lista de proyectos a un {entity}";
+                        d.Parameters[0].Description = $"El id del {entity} a asignar proyetos";
+                        d.RequestBody.Description = "Lista de ids de los proyectos a asignar";
+                        return d;
+                    });
+
             return group;
         }
 
