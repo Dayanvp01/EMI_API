@@ -11,21 +11,46 @@ namespace EMI_API.EndPoints
 {
     public static class UsersEndPoints
     {
-        
+        private static readonly string entity = "User";
         public static RouteGroupBuilder MapUsers(this RouteGroupBuilder group)
         {
-           
+
             group.MapPost("/register", Register)
-                .AddEndpointFilter<ValidationFilters<UserCredentialsDTO>>();
+                .AddEndpointFilter<ValidationFilters<UserCredentialsDTO>>()
+                .CreateDocumentation(entity);
 
             group.MapPost("/login", Login)
-              .AddEndpointFilter<ValidationFilters<UserCredentialsDTO>>();
+              .AddEndpointFilter<ValidationFilters<UserCredentialsDTO>>()
+               .WithOpenApiDocumentation(
+                    summary: $"Login del usuario del aplicativo",
+                    description: $"Servicio que permite realizar login en el aplicativo y obtener token",
+                    paramDescription: $"",
+                    requestBodyDescription: "Credenciales del usuario"
+                ); 
 
-            group.MapPost("/addAdmin",AddAdmin).AddEndpointFilter<ValidationFilters<EditClaimDTO>>();
+            group.MapPost("/addAdmin",AddAdmin).AddEndpointFilter<ValidationFilters<EditClaimDTO>>()
+                .WithOpenApiDocumentation(
+                    summary: $"Asigna rol Admin",
+                    description: $"Asigna el rol de Admin a un usuario del sistema",
+                    paramDescription: $"",
+                    requestBodyDescription: "email del usuario"
+                ); 
 
-            group.MapPost("/removeAdmin", RemoveAdmin).AddEndpointFilter<ValidationFilters<EditClaimDTO>>();
+            group.MapPost("/removeAdmin", RemoveAdmin).AddEndpointFilter<ValidationFilters<EditClaimDTO>>()
+                 .WithOpenApiDocumentation(
+                    summary: $"Remover rol Admin",
+                    description: $"Remueve el rol de Admin a un usuario del sistema",
+                    paramDescription: $"",
+                    requestBodyDescription: "email del usuario"
+                ); ;
 
-            group.MapPost("/refreshToken", RefreshToken);
+            group.MapPost("/refreshToken", RefreshToken)
+                 .WithOpenApiDocumentation(
+                    summary: $"Renovar Token",
+                    description: $"Renueva el token de un usuario con token no expirado",
+                    paramDescription: $"",
+                    requestBodyDescription: ""
+                ); 
 
             return group;
         }

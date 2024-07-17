@@ -3,7 +3,24 @@
     public static class OpenApiConfigurationExtensions
     {
 
-        
+        public static RouteHandlerBuilder WithOpenApiDocumentation(this RouteHandlerBuilder builder, string summary, string description, string paramDescription, string requestBodyDescription)
+        {
+            return builder.WithOpenApi(opt =>
+            {
+                opt.Summary = summary;
+                opt.Description = description;
+                if (opt.Parameters.Count > 0)
+                {
+                    opt.Parameters[0].Description = paramDescription;
+                }
+                if (opt.RequestBody != null)
+                {
+                    opt.RequestBody.Description = requestBodyDescription;
+                }
+                return opt;
+            });
+        }
+
         public static RouteHandlerBuilder CreateDocumentation(this RouteHandlerBuilder builder, string entity)
         {
             return builder.WithOpenApi(opt =>

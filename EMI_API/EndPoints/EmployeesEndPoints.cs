@@ -22,23 +22,20 @@ namespace EMI_API.EndPoints
                 .DeleteDocumentation(entity);
 
             group.MapPost("ByDepartmentIdInAnyProject/{deparmentId:int}", ByDepartmentIdInAnyProject)
-                .WithOpenApi(d =>
-                {
-                    d.Summary = $"Obtner {entity} por department";
-                    d.Description = $"Obtiene los {entity} por departament que estan en almenos en un proyecto ";
-                    d.Parameters[0].Description = $"El id del department a consultar {entity}";
-                    return d;
-                });
+                .WithOpenApiDocumentation(
+                        summary: $"Obtener {entity} por department",
+                        description: $"Obtiene los {entity} por departament que estan en al menos un proyecto",
+                        paramDescription: $"El id del department a consultar {entity}",
+                        requestBodyDescription:""
+                    );
 
             group.MapPost("/{id:int}/setProject", SetProjects)
-                    .WithOpenApi(d =>
-                    {
-                        d.Summary = $"Asigna un proyecto a un {entity}";
-                        d.Description = $"Asigna una lista de proyectos a un {entity}";
-                        d.Parameters[0].Description = $"El id del {entity} a asignar proyetos";
-                        d.RequestBody.Description = "Lista de ids de los proyectos a asignar";
-                        return d;
-                    });
+                     .WithOpenApiDocumentation(
+                        summary: $"Asigna un proyecto a un {entity}",
+                        description: $"Asigna una lista de proyectos a un {entity}",
+                        paramDescription: $"El id del {entity} a asignar proyetos",
+                        requestBodyDescription: "Lista de ids de los proyectos a asignar"
+                    );
 
             return group;
         }
